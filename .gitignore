@@ -404,4 +404,5 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-.containers
+.container
+.idea
