@@ -1,6 +1,4 @@
-using Evently.Modules.Events.Domain.Events;
-
-namespace Evently.Modules.Events.Domain.Abstractions;
+﻿namespace Evently.Modules.Events.Domain.Abstractions;
 
 public abstract class Entity
 {
@@ -17,8 +15,8 @@ public abstract class Entity
         _domainEvents.Clear();
     }
 
-    protected void Raise(IDomainEvent @event)
+    protected void Raise(IDomainEvent domainEvent)
     {
-        _domainEvents.Add(@event);
+        _domainEvents.Add(domainEvent);
     }
 }

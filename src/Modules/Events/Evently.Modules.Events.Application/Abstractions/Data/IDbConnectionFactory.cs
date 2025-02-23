@@ -1,4 +1,4 @@
-using System.Data.Common;
+﻿using System.Data.Common;
 
 namespace Evently.Modules.Events.Application.Abstractions.Data;
 

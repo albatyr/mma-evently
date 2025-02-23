@@ -21,6 +21,6 @@ if (app.Environment.IsDevelopment())
     app.ApplyMigrations();
 }
 
-app.MapEventsEndpoints();
+EventsModule.MapEndpoints(app);
 
 await app.RunAsync();
