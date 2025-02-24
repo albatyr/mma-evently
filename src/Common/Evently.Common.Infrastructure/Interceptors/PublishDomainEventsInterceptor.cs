@@ -8,16 +8,17 @@ namespace Evently.Common.Infrastructure.Interceptors;
 
 public sealed class PublishDomainEventsInterceptor(IServiceScopeFactory serviceScopeFactory) : SaveChangesInterceptor
 {
-    public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData,
-        InterceptionResult<int> result,
-        CancellationToken cancellationToken = new())
+    public override async ValueTask<int> SavedChangesAsync(
+        SaveChangesCompletedEventData eventData,
+        int result,
+        CancellationToken cancellationToken = default)
     {
         if (eventData.Context is not null)
         {
             await PublishDomainEventsAsync(eventData.Context);
         }
 
-        return await base.SavingChangesAsync(eventData, result, cancellationToken);
+        return await base.SavedChangesAsync(eventData, result, cancellationToken);
     }
 
     private async Task PublishDomainEventsAsync(DbContext context)
