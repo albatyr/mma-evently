@@ -7,6 +7,7 @@ using Evently.Modules.Users.Domain.Users;
 using Evently.Modules.Users.Infrastructure.Authorization;
 using Evently.Modules.Users.Infrastructure.Database;
 using Evently.Modules.Users.Infrastructure.Identity;
+using Evently.Modules.Users.Infrastructure.Outbox;
 using Evently.Modules.Users.Infrastructure.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -37,12 +38,13 @@ public static class UsersModule
 
         services.AddTransient<KeyCloakAuthDelegatingHandler>();
 
-        services.AddHttpClient<KeyCloakClient>((serviceProvider, httpClient) =>
+        services
+            .AddHttpClient<KeyCloakClient>((serviceProvider, httpClient) =>
             {
-                KeyCloakOptions keyCloakOptions = serviceProvider
+                KeyCloakOptions keycloakOptions = serviceProvider
                     .GetRequiredService<IOptions<KeyCloakOptions>>().Value;
 
-                httpClient.BaseAddress = new Uri(keyCloakOptions.AdminUrl);
+                httpClient.BaseAddress = new Uri(keycloakOptions.AdminUrl);
             })
             .AddHttpMessageHandler<KeyCloakAuthDelegatingHandler>();
 
@@ -54,11 +56,15 @@ public static class UsersModule
                     configuration.GetConnectionString("Database"),
                     npgsqlOptions => npgsqlOptions
                         .MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Users))
-                .AddInterceptors(sp.GetRequiredService<PublishDomainEventsInterceptor>())
+                .AddInterceptors(sp.GetRequiredService<InsertOutboxMessagesInterceptor>())
                 .UseSnakeCaseNamingConvention());
 
         services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<UsersDbContext>());
+
+        services.Configure<OutboxOptions>(configuration.GetSection("Users:Outbox"));
+
+        services.ConfigureOptions<ConfigureProcessOutboxJob>();
     }
 }

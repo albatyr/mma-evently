@@ -1,4 +1,4 @@
-using Evently.Common.Application.EventBus;
+﻿using Evently.Common.Application.EventBus;
 using Evently.Common.Application.Exceptions;
 using Evently.Common.Application.Messaging;
 using Evently.Common.Domain;
@@ -9,19 +9,21 @@ using MediatR;
 
 namespace Evently.Modules.Users.Application.Users.RegisterUser;
 
-internal sealed class UserRegisteredDomainEventHandler(ISender sender, IEventBus eventBus)
+internal sealed class UserRegisteredDomainEventHandler(ISender sender, IEventBus bus)
     : IDomainEventHandler<UserRegisteredDomainEvent>
 {
     public async Task Handle(UserRegisteredDomainEvent domainEvent, CancellationToken cancellationToken)
     {
-        Result<UserResponse> result = await sender.Send(new GetUserQuery(domainEvent.UserId), cancellationToken);
+        Result<UserResponse> result = await sender.Send(
+            new GetUserQuery(domainEvent.UserId),
+            cancellationToken);
 
         if (result.IsFailure)
         {
             throw new EventlyException(nameof(GetUserQuery), result.Error);
         }
 
-        await eventBus.PublishAsync(
+        await bus.PublishAsync(
             new UserRegisteredIntegrationEvent(
                 domainEvent.Id,
                 domainEvent.OccurredOnUtc,
