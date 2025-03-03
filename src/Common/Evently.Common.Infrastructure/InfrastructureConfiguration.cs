@@ -69,6 +69,7 @@ public static class InfrastructureConfiguration
 
             configure.UsingInMemory((context, cfg) =>
             {
+                cfg.UseNewtonsoftJsonSerializer();
                 cfg.ConfigureEndpoints(context);
             });
         });
