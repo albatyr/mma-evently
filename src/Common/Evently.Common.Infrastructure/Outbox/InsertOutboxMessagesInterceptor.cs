@@ -10,7 +10,7 @@ public sealed class InsertOutboxMessagesInterceptor : SaveChangesInterceptor
 {
     public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData,
         InterceptionResult<int> result,
-        CancellationToken cancellationToken = new CancellationToken())
+        CancellationToken cancellationToken = default)
     {
         if (eventData.Context is not null)
         {
