@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Evently.Modules.Ticketing.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(TicketingDbContext))]
-    [Migration("20240416185104_Create_Database")]
+    [Migration("20250308133018_Create_Database")]
     partial class Create_Database
     {
         /// <inheritdoc />
@@ -21,7 +21,7 @@ namespace Evently.Modules.Ticketing.Infrastructure.Database.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("ticketing")
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -356,10 +356,6 @@ namespace Evently.Modules.Ticketing.Infrastructure.Database.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid")
                         .HasColumnName("order_id");
-
-                    b.Property<DateTime?>("RefundedAtUtc")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("refunded_at_utc");
 
                     b.Property<Guid>("TransactionId")
                         .HasColumnType("uuid")
