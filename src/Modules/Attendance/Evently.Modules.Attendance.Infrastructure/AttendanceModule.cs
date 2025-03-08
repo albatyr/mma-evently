@@ -14,7 +14,6 @@ using Evently.Modules.Attendance.Infrastructure.Events;
 using Evently.Modules.Attendance.Infrastructure.Inbox;
 using Evently.Modules.Attendance.Infrastructure.Outbox;
 using Evently.Modules.Attendance.Infrastructure.Tickets;
-using Evently.Modules.Attendance.Presentation;
 using Evently.Modules.Events.IntegrationEvents;
 using Evently.Modules.Ticketing.IntegrationEvents;
 using Evently.Modules.Users.IntegrationEvents;
@@ -39,7 +38,7 @@ public static class AttendanceModule
 
         services.AddInfrastructure(configuration);
 
-        services.AddEndpoints(AssemblyReference.Assembly);
+        services.AddEndpoints(Presentation.AssemblyReference.Assembly);
 
         return services;
     }
@@ -50,6 +49,7 @@ public static class AttendanceModule
         registrationConfigurator.AddConsumer<IntegrationEventConsumer<UserProfileUpdatedIntegrationEvent>>();
         registrationConfigurator.AddConsumer<IntegrationEventConsumer<EventPublishedIntegrationEvent>>();
         registrationConfigurator.AddConsumer<IntegrationEventConsumer<TicketIssuedIntegrationEvent>>();
+        registrationConfigurator.AddConsumer<IntegrationEventConsumer<EventCancellationStartedIntegrationEvent>>();
     }
 
     private static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
@@ -105,7 +105,7 @@ public static class AttendanceModule
 
     private static void AddIntegrationEventHandlers(this IServiceCollection services)
     {
-        Type[] integrationEventHandlers = AssemblyReference.Assembly
+        Type[] integrationEventHandlers = Presentation.AssemblyReference.Assembly
             .GetTypes()
             .Where(t => t.IsAssignableTo(typeof(IIntegrationEventHandler)))
             .ToArray();
