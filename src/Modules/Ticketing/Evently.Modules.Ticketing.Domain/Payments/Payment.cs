@@ -23,7 +23,7 @@ public sealed class Payment : Entity
 
     public DateTime CreatedAtUtc { get; private set; }
 
-    public DateTime? RefundedAtUtc { get; private set; }
+    public DateTime? RefundedAtUtc { get; }
 
     public static Payment Create(Order order, Guid transactionId, decimal amount, string currency)
     {

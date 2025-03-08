@@ -1,3 +1,4 @@
+﻿using Dapper;
 using Evently.Common.Application.Caching;
 using Evently.Common.Application.Clock;
 using Evently.Common.Application.Data;
@@ -19,7 +20,8 @@ namespace Evently.Common.Infrastructure;
 
 public static class InfrastructureConfiguration
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services,
+    public static IServiceCollection AddInfrastructure(
+        this IServiceCollection services,
         Action<IRegistrationConfigurator>[] moduleConfigureConsumers,
         string databaseConnectionString,
         string redisConnectionString)
@@ -28,14 +30,18 @@ public static class InfrastructureConfiguration
 
         services.AddAuthorizationInternal();
 
-        NpgsqlDataSource npgsqlDataSource = new NpgsqlDataSourceBuilder(databaseConnectionString).Build();
-        services.TryAddSingleton(npgsqlDataSource);
+        services.TryAddSingleton<IDateTimeProvider, DateTimeProvider>();
 
-        services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
+        services.TryAddSingleton<IEventBus, EventBus.EventBus>();
 
         services.TryAddSingleton<InsertOutboxMessagesInterceptor>();
 
-        services.TryAddSingleton<IDateTimeProvider, DateTimeProvider>();
+        NpgsqlDataSource npgsqlDataSource = new NpgsqlDataSourceBuilder(databaseConnectionString).Build();
+        services.TryAddSingleton(npgsqlDataSource);
+
+        services.TryAddScoped<IDbConnectionFactory, DbConnectionFactory>();
+
+        SqlMapper.AddTypeHandler(new GenericArrayHandler<string>());
 
         services.AddQuartz();
 
@@ -56,20 +62,17 @@ public static class InfrastructureConfiguration
 
         services.TryAddSingleton<ICacheService, CacheService>();
 
-        services.TryAddSingleton<IEventBus, EventBus.EventBus>();
-
         services.AddMassTransit(configure =>
         {
-            foreach (Action<IRegistrationConfigurator> configureConsumer in moduleConfigureConsumers)
+            foreach (Action<IRegistrationConfigurator> configureConsumers in moduleConfigureConsumers)
             {
-                configureConsumer(configure);
+                configureConsumers(configure);
             }
 
             configure.SetKebabCaseEndpointNameFormatter();
 
             configure.UsingInMemory((context, cfg) =>
             {
-                cfg.UseNewtonsoftJsonSerializer();
                 cfg.ConfigureEndpoints(context);
             });
         });

@@ -1,5 +1,4 @@
-﻿using System;
-using Evently.Common.Application.Exceptions;
+﻿using Evently.Common.Application.Exceptions;
 using Evently.Common.Infrastructure.Authentication;
 using Evently.Modules.Attendance.Application.Abstractions.Authentication;
 using Microsoft.AspNetCore.Http;

@@ -6,9 +6,11 @@ using Evently.Modules.Events.IntegrationEvents;
 namespace Evently.Modules.Events.Application.TicketTypes.UpdateTicketTypePrice;
 
 internal sealed class TicketTypePriceChangedDomainEventHandler(IEventBus eventBus)
-     : DomainEventHandler<TicketTypePriceChangedDomainEvent>
+    : DomainEventHandler<TicketTypePriceChangedDomainEvent>
 {
-    public override async Task Handle(TicketTypePriceChangedDomainEvent domainEvent, CancellationToken cancellationToken = default)
+    public override async Task Handle(
+        TicketTypePriceChangedDomainEvent domainEvent,
+        CancellationToken cancellationToken = default)
     {
         await eventBus.PublishAsync(
             new TicketTypePriceChangedIntegrationEvent(

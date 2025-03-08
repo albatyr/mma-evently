@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Caching.Distributed;
+﻿using Microsoft.Extensions.Caching.Distributed;
 
 namespace Evently.Common.Infrastructure.Caching;
 
@@ -9,8 +9,10 @@ public static class CacheOptions
         AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2)
     };
 
-    public static DistributedCacheEntryOptions Create(TimeSpan? expiration) =>
-        expiration is not null
+    public static DistributedCacheEntryOptions Create(TimeSpan? expiration)
+    {
+        return expiration is not null
             ? new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = expiration }
             : DefaultExpiration;
+    }
 }

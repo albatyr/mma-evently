@@ -8,7 +8,9 @@ namespace Evently.Modules.Events.Application.Events.RescheduleEvent;
 internal sealed class EventRescheduledDomainEventHandler(IEventBus eventBus)
     : DomainEventHandler<EventRescheduledDomainEvent>
 {
-    public override async Task Handle(EventRescheduledDomainEvent domainEvent, CancellationToken cancellationToken = default)
+    public override async Task Handle(
+        EventRescheduledDomainEvent domainEvent,
+        CancellationToken cancellationToken = default)
     {
         await eventBus.PublishAsync(
             new EventRescheduledIntegrationEvent(

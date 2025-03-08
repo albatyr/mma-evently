@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
-        <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    </ItemGroup>
-    
-    <ItemGroup>
-        <PackageReference Include="MassTransit.Abstractions" Version="8.3.7-develop.2222" />
+        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Evently.Common.Domain\Evently.Common.Domain.csproj" />
+        <PackageReference Include="MassTransit.Abstractions" Version="8.3.7-develop.2222"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Evently.Common.Domain\Evently.Common.Domain.csproj"/>
     </ItemGroup>
 
 </Project>

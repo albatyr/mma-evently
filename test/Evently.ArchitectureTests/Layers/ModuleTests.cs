@@ -2,11 +2,11 @@ using System.Reflection;
 using Evently.ArchitectureTests.Abstractions;
 using Evently.Modules.Attendance.Domain.Attendees;
 using Evently.Modules.Attendance.Infrastructure;
-using Evently.Modules.Events.Domain.Categories;
 using Evently.Modules.Events.Domain.Events;
 using Evently.Modules.Events.Infrastructure;
 using Evently.Modules.Ticketing.Domain.Orders;
 using Evently.Modules.Ticketing.Infrastructure;
+using Evently.Modules.Users.Application;
 using Evently.Modules.Users.Domain.Users;
 using Evently.Modules.Users.Infrastructure;
 using NetArchTest.Rules;
@@ -29,7 +29,7 @@ public class ModuleTests : BaseTest
         List<Assembly> usersAssemblies =
         [
             typeof(User).Assembly,
-            Modules.Users.Application.AssemblyReference.Assembly,
+            AssemblyReference.Assembly,
             Modules.Users.Presentation.AssemblyReference.Assembly,
             typeof(UsersModule).Assembly
         ];

@@ -10,7 +10,9 @@ namespace Evently.Modules.Ticketing.Application.Events.CancelEvent;
 internal sealed class ArchiveTicketsEventCanceledDomainEventHandler(ISender sender)
     : DomainEventHandler<EventCanceledDomainEvent>
 {
-    public override async Task Handle(EventCanceledDomainEvent domainEvent, CancellationToken cancellationToken = default)
+    public override async Task Handle(
+        EventCanceledDomainEvent domainEvent,
+        CancellationToken cancellationToken = default)
     {
         Result result = await sender.Send(new ArchiveTicketsForEventCommand(domainEvent.EventId), cancellationToken);
 

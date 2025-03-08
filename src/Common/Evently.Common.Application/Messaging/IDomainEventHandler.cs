@@ -1,5 +1,4 @@
-using Evently.Common.Domain;
-using MediatR;
+﻿using Evently.Common.Domain;
 
 namespace Evently.Common.Application.Messaging;
 

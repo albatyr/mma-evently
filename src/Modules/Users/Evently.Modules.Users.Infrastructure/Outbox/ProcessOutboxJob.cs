@@ -7,7 +7,7 @@ using Evently.Common.Application.Messaging;
 using Evently.Common.Domain;
 using Evently.Common.Infrastructure.Outbox;
 using Evently.Common.Infrastructure.Serialization;
-using MediatR;
+using Evently.Modules.Users.Application;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -49,7 +49,7 @@ internal sealed class ProcessOutboxJob(
                 IEnumerable<IDomainEventHandler> domainEventHandlers = DomainEventHandlersFactory.GetHandlers(
                     domainEvent.GetType(),
                     scope.ServiceProvider,
-                    Application.AssemblyReference.Assembly);
+                    AssemblyReference.Assembly);
 
                 foreach (IDomainEventHandler domainEventHandler in domainEventHandlers)
                 {
@@ -120,7 +120,7 @@ internal sealed class ProcessOutboxJob(
                 ProcessedOnUtc = dateTimeProvider.UtcNow,
                 Error = exception?.ToString()
             },
-            transaction: transaction);
+            transaction);
     }
 
     internal sealed record OutboxMessageResponse(Guid Id, string Content);

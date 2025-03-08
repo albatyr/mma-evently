@@ -21,10 +21,18 @@ public class CacheService(IDistributedCache cache) : ICacheService
         return cache.SetAsync(key, bytes, CacheOptions.Create(expiration), cancellationToken);
     }
 
-    public Task RemoveAsync(string key, CancellationToken cancellationToken = default) =>
-        cache.RemoveAsync(key, cancellationToken);
+    public Task RemoveAsync(string key, CancellationToken cancellationToken = default)
+    {
+        return cache.RemoveAsync(key, cancellationToken);
+    }
 
-    private static T Deserialize<T>(byte[] bytes) => JsonSerializer.Deserialize<T>(bytes)!;
+    private static T Deserialize<T>(byte[] bytes)
+    {
+        return JsonSerializer.Deserialize<T>(bytes)!;
+    }
 
-    private static byte[] Serialize<T>(T value) => JsonSerializer.SerializeToUtf8Bytes(value);
+    private static byte[] Serialize<T>(T value)
+    {
+        return JsonSerializer.SerializeToUtf8Bytes(value);
+    }
 }

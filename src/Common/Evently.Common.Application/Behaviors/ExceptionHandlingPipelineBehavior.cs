@@ -1,4 +1,4 @@
-using Evently.Common.Application.Exceptions;
+﻿using Evently.Common.Application.Exceptions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -9,7 +9,9 @@ internal sealed class ExceptionHandlingPipelineBehavior<TRequest, TResponse>(
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : class
 {
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+    public async Task<TResponse> Handle(
+        TRequest request,
+        RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
         try

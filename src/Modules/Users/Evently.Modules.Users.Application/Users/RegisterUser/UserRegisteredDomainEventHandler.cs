@@ -12,7 +12,9 @@ namespace Evently.Modules.Users.Application.Users.RegisterUser;
 internal sealed class UserRegisteredDomainEventHandler(ISender sender, IEventBus bus)
     : DomainEventHandler<UserRegisteredDomainEvent>
 {
-    public override async Task Handle(UserRegisteredDomainEvent domainEvent, CancellationToken cancellationToken = default)
+    public override async Task Handle(
+        UserRegisteredDomainEvent domainEvent,
+        CancellationToken cancellationToken = default)
     {
         Result<UserResponse> result = await sender.Send(
             new GetUserQuery(domainEvent.UserId),

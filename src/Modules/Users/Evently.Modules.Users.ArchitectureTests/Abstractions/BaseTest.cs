@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Evently.Modules.Users.Application;
 using Evently.Modules.Users.Domain.Users;
 using Evently.Modules.Users.Infrastructure;
 
@@ -8,7 +9,7 @@ namespace Evently.Modules.Users.ArchitectureTests.Abstractions;
 public abstract class BaseTest
 #pragma warning restore CA1515
 {
-    protected static readonly Assembly ApplicationAssembly = typeof(Users.Application.AssemblyReference).Assembly;
+    protected static readonly Assembly ApplicationAssembly = typeof(AssemblyReference).Assembly;
 
     protected static readonly Assembly DomainAssembly = typeof(User).Assembly;
 

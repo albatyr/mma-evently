@@ -1,8 +1,8 @@
-namespace Evently.Common.Application.EventBus;
+﻿namespace Evently.Common.Application.EventBus;
 
 public interface IIntegrationEvent
 {
     Guid Id { get; }
 
-    DateTime OccurredOn { get; }
+    DateTime OccurredOnUtc { get; }
 }
