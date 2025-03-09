@@ -33,6 +33,3 @@ jobs:
 
       - name: Test
         run: dotnet test Evently.sln --configuration Release --no-restore --no-build
-
-      - name: Publish
-        run: dotnet publish Evently.sln --configuration Release --no-restore --no-build
