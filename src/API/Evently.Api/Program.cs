@@ -74,7 +74,10 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference(o =>
     {
-        o.Servers = [new ScalarServer("https://localhost:5001")];
+        o.Servers = 
+        [
+            new ScalarServer("https://localhost:5001"),
+        ];
     });
     app.ApplyMigrations();
 }
