@@ -1,5 +1,6 @@
 using Evently.Api.Extensions;
-using Evently.Api.Middlewares;
+using Evently.Api.Middleware;
+using Evently.Api.OpenTelemetry;
 using Evently.Common.Application;
 using Evently.Common.Infrastructure;
 using Evently.Common.Presentation.Endpoints;
@@ -33,9 +34,10 @@ string databaseConnectionString = builder.Configuration.GetConnectionString("Dat
 string redisConnectionString = builder.Configuration.GetConnectionString("Cache")!;
 
 builder.Services.AddInfrastructure(
+    DiagnosticsConfig.ServiceName,
     [
         EventsModule.ConfigureConsumers(redisConnectionString),
-        TicketingModule.ConfigureConsumers, 
+        TicketingModule.ConfigureConsumers,
         AttendanceModule.ConfigureConsumers
     ],
     databaseConnectionString,
@@ -44,7 +46,7 @@ builder.Services.AddInfrastructure(
 builder.Services.AddHealthChecks()
     .AddNpgSql(databaseConnectionString)
     .AddRedis(redisConnectionString)
-    .AddUrlGroup(new Uri(builder.Configuration.GetValue<string>("KeyCloak:HealthUrl")!), HttpMethod.Get, "keycloak");
+    .AddUrlGroup(builder.Configuration.GetKeyCloakHealthUrl());
 
 builder.Configuration.AddModuleConfiguration(["events", "users", "ticketing", "attendance"]);
 builder.Services.AddEventsModule(builder.Configuration);
@@ -71,6 +73,8 @@ app.MapHealthChecks("health", new HealthCheckOptions
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
 
+app.UseLogContext();
+
 app.UseSerilogRequestLogging();
 
 app.UseExceptionHandler();
@@ -80,3 +84,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 await app.RunAsync();
+
+
+#pragma warning disable CA1515
+public partial class Program;
+#pragma warning restore CA1515

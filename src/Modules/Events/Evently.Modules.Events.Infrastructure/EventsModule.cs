@@ -39,8 +39,6 @@ public static class EventsModule
 
         return services;
     }
-    
-    
 
     public static Action<IRegistrationConfigurator> ConfigureConsumers(string redisConnectionString)
     {

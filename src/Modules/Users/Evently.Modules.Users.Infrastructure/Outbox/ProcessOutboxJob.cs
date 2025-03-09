@@ -46,14 +46,14 @@ internal sealed class ProcessOutboxJob(
 
                 using IServiceScope scope = serviceScopeFactory.CreateScope();
 
-                IEnumerable<IDomainEventHandler> domainEventHandlers = DomainEventHandlersFactory.GetHandlers(
+                IEnumerable<IDomainEventHandler> handlers = DomainEventHandlersFactory.GetHandlers(
                     domainEvent.GetType(),
                     scope.ServiceProvider,
                     AssemblyReference.Assembly);
 
-                foreach (IDomainEventHandler domainEventHandler in domainEventHandlers)
+                foreach (IDomainEventHandler domainEventHandler in handlers)
                 {
-                    await domainEventHandler.Handle(domainEvent);
+                    await domainEventHandler.Handle(domainEvent, context.CancellationToken);
                 }
             }
             catch (Exception caughtException)
